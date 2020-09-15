@@ -1,0 +1,505 @@
+#ifndef __BASE_OBJECT_HPP
+#define __BASE_OBJECT_HPP
+
+#include <queue>
+#include <mutex>
+#include <atomic>
+#include <thread>
+#include <chrono>
+#include <memory>
+#include <iostream>
+#include <condition_variable>
+
+#include "ExpHandler.hpp"
+#include "../../define.hpp"
+
+#define NO_ALLOCATED_COMPUTE_DOMAIN 255
+
+#define PORT_INDEX(a) (PortName::ToIndex(PortName::_PortName::a))
+
+using namespace std;
+
+//class MailBoxUser{
+//private:
+//    enum class MessageType{
+//        POS_EDGE,
+//        NEG_EDGE,
+//        SEND_VALUE,
+//        EVENT,
+//        DONE_PASSIVE,///the state won't change unless the input change
+//        DONE_ACTIVE  ///the state will change after a period of time
+//    };
+//
+//    class Message{
+//    private:
+//        enum class MessageType type;
+//        void* data;
+//
+//    public:
+//        Message(enum class MessageType& type,void* data=nullptr)
+//            :type(type),data(data){
+//            return;
+//        }
+//       ~Message(){
+///**           switch(this->type)
+// *            call corresponding destructor of the
+// *            pointer directed toward
+// **/
+//           return;
+//        }
+//        inline void* GetData() const{
+//            return this->data;
+//        }
+//    };
+//
+//    static vector<std::mutex> locks;
+//    static vector<queue<Message> > mailboxs;
+//    static vector<std::condition_variable> conds;
+//
+//    static uint32_t counter;
+//    static std::mutex initLock;
+//
+//    int mailboxID;
+//
+//protected:
+//	virtual void DealWith(Message& message);
+//
+//public:
+//    MailBoxUser(){
+//        std::lock_guard<std::mutex> lock(this->initLock);
+//        this->mailboxID = (MailBoxUser::counter++);
+//        std::mutex newLock;
+//        std::condition_variable cond;
+//        MailBoxUser::locks.push_back(newLock);
+//        MailBoxUser::conds.push_back(cond);
+//        MailBoxUser::mailboxs.push_back(queue<Message>());
+//        assert((MailBoxUser::locks.size()
+//              ==MailBoxUser::counter)
+//             &&(MailBoxUser::conds.size()
+//              ==MailBoxUser::counter)
+//             &&(MailBoxUser::mailboxs.size()
+//              ==MailBoxUser::counter));
+//        return;
+//    }
+//
+//    void Run(){
+//        while (true){
+//            std::unique_lock<std::mutex> lock(this->locks[this->mailboxID]);
+//            while (this->mailboxs[this->mailboxID].empty()){
+//                this->conds[this->mailboxID].wait(lock);
+//            }
+//            if  ( !this->mailboxs[this->mailboxID].empty()){
+//                this->DealWith(this->mailboxs[this->mailboxID].front());
+//                this->mailboxs[this->mailboxID].pop();
+//            }
+//        }
+//        return;
+//    }
+//};
+
+//class ComputeDomain: public MailBoxUser{
+//protected:
+//
+//public:
+//
+//};
+
+class Object{
+public:
+    typedef uint32_t PortNumType;
+    typedef  int32_t PortDataType;/// only can be change to basic data type
+    typedef  uint8_t PortBitWidthType;
+
+    typedef float CounterType;
+
+    static const array<unsigned PortDataType,33>  mask;
+    static const array<unsigned PortDataType,33>  extend;
+    static const array<unsigned PortDataType,33>  highest;
+
+    enum class PortDirection{
+        IN,OUT
+    };
+
+    class Port final{
+    private:
+        static atomic<PortNumType> portNum;
+        /** the counter of the port, it is necessary for the identification
+         *  if the paired in-out port crosses the computation domain
+         *  and the usage of atomic make the constructor thread-safe
+         **/
+
+        PortNumType serial;
+
+        bool isInput;
+        /** the mark for the direction of the port
+         *  true for input while false for output
+         **/
+
+        PortBitWidthType bitWidth;
+        /** set the bit-width of the port
+         **/
+
+        CounterType* countPtr;
+        /*** the counter field of the port ******************
+         *                                                  *
+         *    if this port is an input port, it holds the   *
+         *    pointer of the counter of the paired output   *
+         *    to statistic the reading times                *
+         *                                                  *
+         *    if this port is an output port, it holds the  *
+         *    same pointer, then send the pointer to the    *
+         *    paired input port. It can not modify the      *
+         *    counter during the running process            *
+         ****************************************************/
+
+        PortDataType* dataPtr;
+        /*** the data field of the port *********************
+         *                                                  *
+         *    if this port is an input port, it holds the   *
+         *    pointer connect to the data field of the      *
+         *    corresponding output port                     *
+         *    if this port is an output port, it holds the  *
+         *    pointer for the paired input port to copy     *
+         *                                                  *
+         *    thus, the input port can directly get the     *
+         *    updated value after the output port has been  *
+         *    updated                                       *
+         *                                                  *
+         *        ----------------------------------        *
+         *                                                  *
+         *    if the port cross two different computation   *
+         *    domain, then the output port should send      *
+         *    a message to the corresponding computation    *
+         *    domain to update the data while the paired    *
+         *    computation domain also maintain a variable   *
+         *    to be pointed by the cross-domain input port. *
+         *                                                  *
+         *    the cross-domain operation is completed       *
+         *    by the class ComputeDomain                    *
+         ****************************************************/
+
+    public:
+        Port(PortBitWidthType bitWidth,PortDirection direct)
+            :bitWidth(bitWidth),
+              isInput(direct==PortDirection::IN){
+            this->  serial = (Port::portNum++);
+            this-> dataPtr =  nullptr;
+            this->countPtr =  nullptr;
+            return;
+        }
+        Port(PortBitWidthType bitWidth,PortDirection direct,PortDataType& initData)
+            :bitWidth(bitWidth),
+              isInput(direct==PortDirection::IN){
+            assert(direct ==  PortDirection::OUT);
+            this->  serial = (Port::portNum++);
+            this-> dataPtr = &initData;
+            this->countPtr =  nullptr;
+            return;
+        }
+        inline bool IsInput()const{
+            return this->isInput;
+        }
+        inline bool Connected()const{
+            return (this->dataPtr!=nullptr);
+        }
+        inline void Clone(const Port& port){
+            assert(( port. dataPtr != nullptr)
+                && (this-> dataPtr == nullptr)
+                && (this->countPtr == nullptr)
+                && (this-> isInput == port.isInput)
+                && (this->bitWidth == port.bitWidth));
+            this->dataPtr  = port.dataPtr ;
+            this->countPtr = port.countPtr;
+            return;
+        }
+        inline void Clone(PortDataType& data){
+            assert((!this->isInput)
+                 &&( this-> dataPtr == nullptr));
+            this->dataPtr  = &data;
+            return;
+        }
+        inline void CloneCounter(CounterType& counter){
+            assert((!this->isInput)
+                 &&( this->countPtr == nullptr));
+            this->countPtr = &counter;
+            return;
+        }
+        inline void ConnectTo(const Port& port){
+            assert(!port.isInput
+                &&( port.dataPtr != nullptr)
+                && this->isInput
+                &&(this-> dataPtr == nullptr)
+                &&(this->countPtr == nullptr)
+                &&(this->bitWidth == port.bitWidth));
+            this->dataPtr = port.dataPtr;
+            this->countPtr= port.countPtr;
+            return;
+        }
+        inline bool SameTo(const Port& port) const{
+            assert((port.dataPtr != nullptr)
+                &&(this->dataPtr != nullptr)
+                &&(this->isInput == port.isInput)
+                &&(this->bitWidth== port.bitWidth));
+            return this->dataPtr == port.dataPtr;
+        }
+        inline bool SameTo(const PortDataType& data) const{
+            assert((!this->isInput)
+                  &&(this->dataPtr!=nullptr));
+            return  this->dataPtr == &data;
+        }
+        inline bool ConnectedTo(const Port& port)const{
+            assert(!port.isInput
+                &&( port.dataPtr != nullptr)
+                && this->isInput
+                &&(this->dataPtr != nullptr)
+                &&(this->bitWidth== port.bitWidth));
+            return this->dataPtr == port.dataPtr;
+        }
+        inline bool SerialIs(PortNumType serial)const{
+            return this->serial == serial;
+        }
+        inline PortNumType GetSerial(){
+            return this->serial;
+        }
+        inline void PrintAddr() const{
+            std::cout<<this->dataPtr;
+            return;
+        }
+        inline PortDataType       Data() const{
+            assert(this->isInput);
+            return (Object::mask[this->bitWidth])&(*(this->dataPtr));
+        }
+        inline PortDataType SignedData() const{
+        /** return the extend data for following computations
+         **/
+            assert(this->isInput);
+            return ((*this->dataPtr)&Object::highest[this->bitWidth])?
+                   ((*this->dataPtr)|Object::extend [this->bitWidth]):
+                    (*this->dataPtr);
+        }
+        inline void Read(){
+            if (this->countPtr!=nullptr)
+                (*(this->countPtr))++;
+            return;
+        }
+        inline void Print(){
+            std::cout<<this->dataPtr<<std::endl;
+        }
+    };
+protected:
+    vector<Port> ports;///the ports connected to outside
+    /**** ToDo ******************
+     *  turn the variable type  *
+     *  from vector to array    *
+     *               by wenzhi  *
+     ****************************/
+
+    class BasePortName{
+    public:
+        virtual PortNumType ToIndex() const =0;
+    };
+
+    virtual inline void IndexConnectTo(PortNumType index,const Port& externalPort){
+        assert(index>=0 && index<this->ports.size());
+        this->ports[index].ConnectTo(externalPort);
+        return;
+    }
+    virtual inline void IndexClone(PortNumType index,const Port& externalPort){
+        assert(index>=0 && index<this->ports.size());
+        this->ports[index].Clone(externalPort);
+        return;
+    }
+
+public:
+    Object(){
+        /** the subclass should override this
+         *  constructor to initialize the ports
+         **/
+        this->ports.clear();
+        return;
+    }
+    virtual void InitializePorts() =0;
+    virtual void OutputConnect() =0;
+
+    /******************************************
+     **  the methods for checking connection **
+     ******************************************/
+    inline bool InputConnected() const{
+        for (auto port : this->ports)
+            if (port.IsInput()&&(!port.Connected()))
+                return false;
+        return true;
+    }
+    inline bool AllInputNotConnected() const{
+        for (auto port : this->ports)
+            if (port.IsInput()&&port.Connected())
+                return false;
+        return true;
+    }
+    virtual bool  InnerConnectedCorrect() const = 0;
+    virtual bool OutputConnectedCorrect() const = 0;
+    inline  bool OutputConnected() const{
+        for (auto port : this->ports)
+            if ((!port.IsInput())&&(!port.Connected()))
+                return false;
+        return OutputConnectedCorrect();
+    }
+    inline bool OuterConnected() const{
+        return this-> InputConnected()
+            && this->OutputConnected();
+    }
+    virtual void InnerConnect() = 0;
+    /**************************************************
+     *  connect inner components with the outer ports *
+     **************************************************/
+    virtual bool InnerConnected() const = 0;
+    /*************************************
+     *  check whether inner components   *
+     *  has connected to the outer ports *
+     *************************************/
+    inline bool Connected() const{
+         return this->InnerConnected()
+            &&  this->InnerConnectedCorrect()
+            &&  this->OuterConnected();
+     }
+
+    /*********************************************
+     **  the methods for connecting outer-ports **
+     *********************************************/
+    inline void Clone(const BasePortName& portName,const Port& externalPort){
+        this->IndexClone(portName.ToIndex(),externalPort);
+        return;
+    }
+    inline void Clone(Port& externalPort,const BasePortName& portName) const{
+        externalPort.Clone(this->ports[portName.ToIndex()]);
+        return;
+    }
+    inline void ConnectTo(const BasePortName& portName,const Port& externalPort){
+        this->IndexConnectTo(portName.ToIndex(),externalPort);
+        return;
+    }
+    inline void ConnectTo(
+            Port& externalPort,const BasePortName& portName
+        ) const{
+        externalPort.ConnectTo(this->ports[portName.ToIndex()]);
+        return;
+    }
+    inline void ConnectTo(
+            Object& obj,const BasePortName& portName0,
+                        const BasePortName& portName1
+        ) const{
+        obj.ports[portName0.ToIndex()].ConnectTo(this->ports[portName1.ToIndex()]);
+        return;
+    }
+    inline void ConnectTo(
+            const BasePortName& portName0,
+            const Object& obj,const BasePortName& portName1
+            /// the usage of const only to show the direction
+        ){
+        this->ports[portName0.ToIndex()].ConnectTo(obj.ports[portName1.ToIndex()]);
+        return;
+    }
+
+    inline bool SameTo(const BasePortName& portName,const Port& externalPort) const{
+        return this->ports[portName.ToIndex()].SameTo(externalPort);
+    }
+    inline bool SameTo(const Port& externalPort,const BasePortName& portName) const{
+        return externalPort.SameTo(this->ports[portName.ToIndex()]);
+    }
+    inline bool ConnectedTo(const BasePortName& portName,const Port& externalPort) const{
+        return this->ports[portName.ToIndex()].ConnectedTo(externalPort);
+    }
+    inline bool ConnectedTo(
+            const Port& externalPort,const BasePortName& portName
+        ) const{
+        return externalPort.ConnectedTo(this->ports[portName.ToIndex()]);
+    }
+    inline bool ConnectedTo(
+            const Object& obj,const BasePortName& portName0,
+                  const BasePortName& portName1
+        ) const{
+        return obj.ports[portName0.ToIndex()].ConnectedTo(this->ports[portName1.ToIndex()]);
+    }
+    inline bool ConnectedTo(
+            const BasePortName& portName0,
+            const Object& obj,const BasePortName& portName1
+        ) const{
+        return this->ports[portName0.ToIndex()].ConnectedTo(obj.ports[portName1.ToIndex()]);
+    }
+
+    virtual bool Run() = 0;
+    /*****************************************
+     *  modified the behavior of the object  *
+     *  while the return value shows whether *
+     *  the status has changed               *
+     *****************************************/
+
+    ///virtual bool CheckAcyclic() = 0;
+    /**** ToDo ******************************
+     *  to check the combinational logical  *
+     *  component does not form cycle       *
+     *                           by wenzhi  *
+     ****************************************/
+};
+
+class ClockedObject: public Object{
+private:
+    typedef uint32_t CycleType;
+    CycleType curCycle;
+
+protected:
+    inline void AddCycle(){
+        this->curCycle++;
+        return;
+    }
+    inline void ResetCycle(){
+        this->curCycle=0;
+        return;
+    }
+
+    /** since the counting strategy is different for different obj.
+     ** this function is implemented in the subclass
+     **/
+//    inline void AddCounter(){
+//        this->counter++;
+//        return;
+//    }
+
+public:
+    enum class ClockEdge{
+         POS_EDGE,
+         NEG_EDGE,
+        BOTH_EDGE
+    };
+
+    ClockedObject(){
+        this->curCycle = 0;
+//        this->counter  = 0;
+        return;
+    }
+
+    /// the methods for discrete time simulation
+//	inline void SynClock(CycleType curCycle){
+//	    assert(this->curCycle <= curCycle);
+//        this->curCycle = curCycle;
+//        return;
+//	}
+//    inline CycleType CurCycle(){
+//        return this->curCycle;
+//    }
+
+	virtual bool atPosEdge() = 0;
+	virtual bool atNegEdge() = 0;
+	/********************************************************************
+	 *  the object action when the edge of cycle comes                  *
+     *  the return value told                                           *
+     *  object has actually changed                                     *
+     *  the action of the module when the edge of cycle comes           *
+     *  the return value tells whether the object has actually changed  *
+     *                                                                  *
+     ****  Remark  **********************************************       *
+     *  both of those method will not change the output value   *       *
+     ********************************************************************/
+};
+
+#endif // __BASE_OBJECT_HPP

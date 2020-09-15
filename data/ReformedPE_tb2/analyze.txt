@@ -1,0 +1,108 @@
+Register activation statistics:
+	Register total zero write bits:	524-bit
+	Register total  one write bits:	283-bit
+	Register total    read    bits:	938-bit
+	9-bit register
+		total write  bits:	54
+		total read   bits:	58
+		write zero  times:	30
+		write  one  times:	24
+	8-bit register
+		total write  bits:	48
+		total read   bits:	48
+		write zero  times:	33
+		write  one  times:	15
+	24-bit register
+		total write  bits:	144
+		total read   bits:	144
+		write zero  times:	108
+		write  one  times:	36
+	17-bit register
+		total write  bits:	289
+		total read   bits:	344
+		write zero  times:	174
+		write  one  times:	115
+	16-bit register
+		total write  bits:	272
+		total read   bits:	344
+		write zero  times:	179
+		write  one  times:	93
+FIFO activation statistics:
+	FIFO total write bits:	869-bit
+	FIFO total zero write:	620-bit
+	FIFO total zero write:	249-bit
+	FIFO total read bits :	804-bit
+	FIFO parameters: width:17 depth:8
+		total push times:	8
+		total  pop times:	6
+		total write bits:	136
+		 zero write bits:	97
+		  one write bits:	39
+		total  read bits:	102
+	FIFO parameters: width:16 depth:8
+		total push times:	18
+		total  pop times:	17
+		total write bits:	288
+		 zero write bits:	190
+		  one write bits:	98
+		total  read bits:	272
+	FIFO parameters: width:15 depth:8
+		total push times:	18
+		total  pop times:	17
+		total write bits:	270
+		 zero write bits:	194
+		  one write bits:	76
+		total  read bits:	255
+	FIFO parameters: width:25 depth:1
+		total push times:	7
+		total  pop times:	7
+		total write bits:	175
+		 zero write bits:	139
+		  one write bits:	36
+		total  read bits:	175
+Adder activation statistics:
+	Adder parameters: input0BW:16 input1BW:16 outputBW:24 signed
+		total run times:	6
+Multer activation statistics:
+	Multer parameters: input0BW:8 input1BW:8 outputBW:16 signed
+		total run times:	6
+Comparer activation statistics:
+	Comparer parameters: width:6 unsigned
+		total run times:	23
+Register area statistics:
+	Register total capacity:	74-bit
+	9-bit register
+		total numbers:	1
+		total  bits  :	9
+	8-bit register
+		total numbers:	1
+		total  bits  :	8
+	24-bit register
+		total numbers:	1
+		total  bits  :	24
+	17-bit register
+		total numbers:	1
+		total  bits  :	17
+	16-bit register
+		total numbers:	1
+		total  bits  :	16
+FIFO area statistics:
+	FIFO total capacity:	409-bit
+	FIFO parameters: width:17 depth:8
+		total number:	1
+	FIFO parameters: width:16 depth:8
+		total number:	1
+	FIFO parameters: width:15 depth:8
+		total number:	1
+	FIFO parameters: width:25 depth:1
+		total number:	1
+Adder area statistics:
+	Adder parameters: input0BW:16 input1BW:16 outputBW:24 signed
+		total numbers:	1
+Multer area statistics:
+	Multer parameters: input0BW:8 input1BW:8 outputBW:16 signed
+		total numbers:	1
+Comparer area statistics:
+	Comparer parameters: width:6 unsigned
+		total numbers:	1
+

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Release" />
+	<File name="include\base\Debug.hpp" open="1" top="0" tabpos="30" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="88" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\system\PEArray.cpp" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="96" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\base\ExpHandler.hpp" open="0" top="0" tabpos="32" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="142" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\component\RePE.hpp" open="1" top="0" tabpos="32" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="61639" topLine="1358" />
+		</Cursor>
+	</File>
+	<File name="include\resource\BaseSequLogic.hpp" open="1" top="0" tabpos="34" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="38053" topLine="912" />
+		</Cursor>
+		<Folding>
+			<Collapse line="16" />
+			<Collapse line="352" />
+		</Folding>
+	</File>
+	<File name="include\base\Object.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8793" topLine="224" />
+		</Cursor>
+	</File>
+	<File name="include\component\CE.hpp" open="1" top="0" tabpos="25" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12981" topLine="343" />
+		</Cursor>
+	</File>
+	<File name="include\component\MAC.hpp" open="1" top="0" tabpos="33" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1273" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\system\PEArray.hpp" open="1" top="0" tabpos="29" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="16612" topLine="382" />
+		</Cursor>
+	</File>
+	<File name="include\component\RU.hpp" open="1" top="0" tabpos="35" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="870" topLine="20" />
+		</Cursor>
+	</File>
+	<File name="include\system\RUArray.hpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9431" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\component\ReMixedPE.hpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="103938" topLine="2253" />
+		</Cursor>
+	</File>
+	<File name="src\system\S2Engine.cpp" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="105" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\system\ReMixedPEArray.hpp" open="1" top="0" tabpos="24" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17652" topLine="454" />
+		</Cursor>
+	</File>
+	<File name="include\component\SynPE.hpp" open="1" top="1" tabpos="36" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3408" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="include\component\MixedCE.hpp" open="1" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="22800" topLine="602" />
+		</Cursor>
+	</File>
+	<File name="src\system\ReMixedS2Engine.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="178" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\system\RePEArray.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\system\ReS2Engine.hpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9287" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\system\ReS2Engine.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="227" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\system\S2Engine.hpp" open="1" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13653" topLine="375" />
+		</Cursor>
+	</File>
+	<File name="include\system\ReMixedS2Engine.hpp" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2531" topLine="58" />
+		</Cursor>
+		<Folding>
+			<Collapse line="35" />
+		</Folding>
+	</File>
+	<File name="define.hpp" open="1" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="319" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\system\RePEArray.hpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8703" topLine="136" />
+		</Cursor>
+	</File>
+	<File name="include\resource\BaseCombiLogic.hpp" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="39774" topLine="1038" />
+		</Cursor>
+		<Folding>
+			<Collapse line="799" />
+			<Collapse line="825" />
+		</Folding>
+	</File>
+	<File name="include\test\SystemTest.hpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="96607" topLine="1976" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1209" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\base\Object.cpp" open="0" top="0" tabpos="35" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1788" topLine="75" />
+		</Cursor>
+	</File>
+	<File name="src\component\MixedCE.cpp" open="1" top="0" tabpos="27" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1352" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\system\ReMixedPEArray.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="595" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\component\RePE.cpp" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1043" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\component\RU.cpp" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="871" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\component\ReMixedPE.cpp" open="1" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1410" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\component\PE.hpp" open="1" top="0" tabpos="28" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="46848" topLine="2143" />
+		</Cursor>
+	</File>
+	<File name="src\component\CE.cpp" open="1" top="0" tabpos="26" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1123" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\component\SynPE.cpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1599" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\resource\BaseCombiLogic.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1437" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\resource\BaseSequLogic.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="725" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\test\Test.hpp" open="1" top="0" tabpos="31" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="53638" topLine="862" />
+		</Cursor>
+		<Folding>
+			<Collapse line="51" />
+		</Folding>
+	</File>
+	<File name="src\system\RUArray.cpp" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="102" topLine="0" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

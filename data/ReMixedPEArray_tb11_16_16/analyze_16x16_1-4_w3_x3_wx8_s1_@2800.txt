@@ -1,0 +1,130 @@
+###########################
+    Performance analyze    
+###########################
+total clock used      :	1147784
+equivalent speed(Tops):	0.537906
+###########################
+       Power analyze       
+###########################
+Global buffer activation statistics:
+	   total      global buffer read bits:	115778796
+	  weight   global buffer read bits:	40663140
+	activation global buffer read bits:	75115656
+Register activation statistics:
+	Register total zero write bits:	2031581195-bit
+	Register total  one write bits:	1637830100-bit
+	Register total    read    bits:	4392900426-bit
+	9-bit register
+		total write  bits:	292088259
+		total read   bits:	492184344
+		write zero  times:	163819796
+		write  one  times:	128268463
+	8-bit register
+		total write  bits:	259634008
+		total read   bits:	259024296
+		write zero  times:	146491224
+		write  one  times:	113142784
+	31-bit register
+		total write  bits:	1006081781
+		total read   bits:	1005990021
+		write zero  times:	525232997
+		write  one  times:	480848784
+	16-bit register
+		total write  bits:	694040528
+		total read   bits:	1071971767
+		write zero  times:	394532950
+		write  one  times:	299507578
+	15-bit register
+		total write  bits:	1287749715
+		total read   bits:	1498827416
+		write zero  times:	702772633
+		write  one  times:	584977082
+	2-bit register
+		total write  bits:	129817004
+		total read   bits:	64902582
+		write zero  times:	98731595
+		write  one  times:	31085409
+FIFO activation statistics:
+	FIFO total write bits:	2556604707-bit
+	FIFO total zero write:	1449279346-bit
+	FIFO total  one write:	1107325361-bit
+	FIFO total read bits :	2556580848-bit
+	FIFO parameters: width:21 depth:8
+		total push times:	32455281
+		total  pop times:	32454251
+		total write bits:	681560901
+		 zero write bits:	382202319
+		  one write bits:	299358582
+		total  read bits:	681539271
+	FIFO parameters: width:15 depth:3
+		total push times:	43377606
+		total  pop times:	43377533
+		total write bits:	650664090
+		 zero write bits:	380581908
+		  one write bits:	270082182
+		total  read bits:	650662995
+	FIFO parameters: width:14 depth:3
+		total push times:	85850062
+		total  pop times:	85849981
+		total write bits:	1201900868
+		 zero write bits:	674734006
+		  one write bits:	527166862
+		total  read bits:	1201899734
+	FIFO parameters: width:32 depth:1
+		total push times:	702464
+		total  pop times:	702464
+		total write bits:	22478848
+		 zero write bits:	11761113
+		  one write bits:	10717735
+		total  read bits:	22478848
+Shift Adder activation statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total run times:	32451291
+SignCtrlMulter activation statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total run times:	32378037
+Comparer activation statistics:
+	Comparer parameters: width:4 unsigned
+		total run times:	78170802
+###########################
+        Area analyze       
+###########################
+Register area statistics:
+	Register total capacity:	21248-bit
+	9-bit register
+		total numbers:	256
+		total  bits  :	2304
+	8-bit register
+		total numbers:	256
+		total  bits  :	2048
+	31-bit register
+		total numbers:	256
+		total  bits  :	7936
+	16-bit register
+		total numbers:	256
+		total  bits  :	4096
+	15-bit register
+		total numbers:	256
+		total  bits  :	3840
+	2-bit register
+		total numbers:	512
+		total  bits  :	1024
+FIFO area statistics:
+	FIFO total capacity:	73472-bit
+	FIFO parameters: width:21 depth:8
+		total number:	256
+	FIFO parameters: width:15 depth:3
+		total number:	256
+	FIFO parameters: width:14 depth:3
+		total number:	256
+	FIFO parameters: width:32 depth:1
+		total number:	256
+Shift Adder area statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total numbers:	256
+SignCtrlMulter area statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total numbers:	256
+Comparer area statistics:
+	Comparer parameters: width:4 unsigned
+		total numbers:	256

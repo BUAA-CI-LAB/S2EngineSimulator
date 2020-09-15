@@ -1,0 +1,130 @@
+###########################
+    Performance analyze    
+###########################
+total clock used      :	7068670
+equivalent speed(Tops):	0.087343
+###########################
+       Power analyze       
+###########################
+Global buffer activation statistics:
+	   total      global buffer read bits:	412526352
+	  weight   global buffer read bits:	213396960
+	activation global buffer read bits:	199129392
+Register activation statistics:
+	Register total zero write bits:	16636295857-bit
+	Register total  one write bits:	13720500462-bit
+	Register total    read    bits:	34476570296-bit
+	9-bit register
+		total write  bits:	4032874539
+		total read   bits:	5251783776
+		write zero  times:	2246746291
+		write  one  times:	1786128248
+	8-bit register
+		total write  bits:	3584777368
+		total read   bits:	3584754216
+		write zero  times:	2015878072
+		write  one  times:	1568899296
+	31-bit register
+		total write  bits:	13891012301
+		total read   bits:	13890921316
+		write zero  times:	7175144072
+		write  one  times:	6715868229
+	16-bit register
+		total write  bits:	3642037712
+		total read   bits:	5426696138
+		write zero  times:	2149372246
+		write  one  times:	1492665466
+	15-bit register
+		total write  bits:	3413705715
+		total read   bits:	5426226378
+		write zero  times:	1918309689
+		write  one  times:	1495396026
+	2-bit register
+		total write  bits:	1792388684
+		total read   bits:	896188472
+		write zero  times:	1130845487
+		write  one  times:	661543197
+FIFO activation statistics:
+	FIFO total write bits:	16033062581-bit
+	FIFO total zero write:	8804510972-bit
+	FIFO total  one write:	7228551609-bit
+	FIFO total read bits :	16033055128-bit
+	FIFO parameters: width:21 depth:8
+		total push times:	448097469
+		total  pop times:	448097171
+		total write bits:	9410046849
+		 zero write bits:	4949036087
+		  one write bits:	4461010762
+		total  read bits:	9410040591
+	FIFO parameters: width:15 depth:3
+		total push times:	227627376
+		total  pop times:	227627357
+		total write bits:	3414410640
+		 zero write bits:	2037354592
+		  one write bits:	1377056048
+		total  read bits:	3414410355
+	FIFO parameters: width:14 depth:3
+		total push times:	227580446
+		total  pop times:	227580381
+		total write bits:	3186126244
+		 zero write bits:	1806339590
+		  one write bits:	1379786654
+		total  read bits:	3186125334
+	FIFO parameters: width:32 depth:1
+		total push times:	702464
+		total  pop times:	702464
+		total write bits:	22478848
+		 zero write bits:	11780703
+		  one write bits:	10698145
+		total  read bits:	22478848
+Shift Adder activation statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total run times:	448094236
+SignCtrlMulter activation statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total run times:	448094277
+Comparer activation statistics:
+	Comparer parameters: width:4 unsigned
+		total run times:	122601410
+###########################
+        Area analyze       
+###########################
+Register area statistics:
+	Register total capacity:	21248-bit
+	9-bit register
+		total numbers:	256
+		total  bits  :	2304
+	8-bit register
+		total numbers:	256
+		total  bits  :	2048
+	31-bit register
+		total numbers:	256
+		total  bits  :	7936
+	16-bit register
+		total numbers:	256
+		total  bits  :	4096
+	15-bit register
+		total numbers:	256
+		total  bits  :	3840
+	2-bit register
+		total numbers:	512
+		total  bits  :	1024
+FIFO area statistics:
+	FIFO total capacity:	73472-bit
+	FIFO parameters: width:21 depth:8
+		total number:	256
+	FIFO parameters: width:15 depth:3
+		total number:	256
+	FIFO parameters: width:14 depth:3
+		total number:	256
+	FIFO parameters: width:32 depth:1
+		total number:	256
+Shift Adder area statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total numbers:	256
+SignCtrlMulter area statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total numbers:	256
+Comparer area statistics:
+	Comparer parameters: width:4 unsigned
+		total numbers:	256

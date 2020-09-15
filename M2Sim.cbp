@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="M2Sim" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="include\base\;include\resource\;include\component\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/M2Sim" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/M2Sim" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="define.hpp" />
+		<Unit filename="include/base/Debug.hpp" />
+		<Unit filename="include/base/ExpHandler.hpp" />
+		<Unit filename="include/base/Object.hpp" />
+		<Unit filename="include/component/CE.hpp" />
+		<Unit filename="include/component/MAC.hpp" />
+		<Unit filename="include/component/MixedCE.hpp" />
+		<Unit filename="include/component/PE.hpp" />
+		<Unit filename="include/component/RU.hpp" />
+		<Unit filename="include/component/ReMixedPE.hpp" />
+		<Unit filename="include/component/RePE.hpp" />
+		<Unit filename="include/component/SynPE.hpp" />
+		<Unit filename="include/resource/BaseCombiLogic.hpp" />
+		<Unit filename="include/resource/BaseSequLogic.hpp" />
+		<Unit filename="include/system/PEArray.hpp" />
+		<Unit filename="include/system/RUArray.hpp" />
+		<Unit filename="include/system/ReMixedPEArray.hpp" />
+		<Unit filename="include/system/ReMixedS2Engine.hpp" />
+		<Unit filename="include/system/RePEArray.hpp" />
+		<Unit filename="include/system/ReS2Engine.hpp" />
+		<Unit filename="include/system/S2Engine.hpp" />
+		<Unit filename="include/test/SystemTest.hpp" />
+		<Unit filename="include/test/Test.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/base/Object.cpp" />
+		<Unit filename="src/component/CE.cpp" />
+		<Unit filename="src/component/MixedCE.cpp" />
+		<Unit filename="src/component/RU.cpp" />
+		<Unit filename="src/component/ReMixedPE.cpp" />
+		<Unit filename="src/component/RePE.cpp" />
+		<Unit filename="src/component/SynPE.cpp" />
+		<Unit filename="src/resource/BaseCombiLogic.cpp" />
+		<Unit filename="src/resource/BaseSequLogic.cpp" />
+		<Unit filename="src/system/PEArray.cpp" />
+		<Unit filename="src/system/RUArray.cpp" />
+		<Unit filename="src/system/ReMixedPEArray.cpp" />
+		<Unit filename="src/system/ReMixedS2Engine.cpp" />
+		<Unit filename="src/system/RePEArray.cpp" />
+		<Unit filename="src/system/ReS2Engine.cpp" />
+		<Unit filename="src/system/S2Engine.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,349 @@
+#ifndef __SYSTEM_REFORMED_PE_ARRAY_HPP
+#define __SYSTEM_REFORMED_PE_ARRAY_HPP
+
+#include<iomanip>
+
+#include "../component/RePE.hpp"
+
+#include "../base/ExpHandler.hpp"
+
+class ReformedPEArray: public ClockedObject{
+    typedef uint32_t  ArrayLenType;
+    typedef uint32_t   SerialType;
+
+private:
+
+    const ArrayLenType  width,
+                        height;
+
+    vector<vector<ReformedPE> > peArray;
+
+    static PortDataType _low;
+
+    const static Object::Port _Low_1;
+    const static Object::Port _Low_S_E;
+
+    class PortName:public ReformedPE::PortName{
+    private:
+        static SerialType serialCount;
+        SerialType serial;
+
+    public:
+        PortName(ReformedPE::PortName _portName)
+                :ReformedPE::PortName(_portName){
+            /// wenzhi: ToDo: modify the counting process for better robust
+//            this->serial = ReformedPEArray::PortName::serialCount++;
+            return;
+        }
+        PortName(const PortName& portName)
+          :ReformedPE::PortName(portName){
+            this->serial = ReformedPEArray::PortName::serialCount++;
+            return;
+        }
+        static inline PortNumType Number(){
+            return static_cast<PortNumType>(PortName::serialCount);
+        }
+        PortNumType ToIndex() const override{
+            return this->serial;
+        }
+        static PortNumType ToIndex(PortName portName){
+            return portName.serial;
+        }
+        static void ResetCount(){
+            PortName::serialCount = 0;
+            return;
+        }
+    };
+
+    void InitializePorts(){
+        this->ports.clear();
+        this->ports.reserve(PortName::Number());
+
+        /** ---------- up -------- **/
+        for (int i=0;i<  this->width;i++)
+            this->ports.push_back(Port(   ReformedPE::   OUT_BIT_WIDTH
+                                       +  ReformedPE::     W_BIT_WIDTH
+                                       +  ReformedPE:: VALID_BIT_WIDTH
+                                       +  ReformedPE::OFFSET_BIT_WIDTH
+                                       +  ReformedPE::    WE_BIT_WIDTH,
+                                          PortDirection::IN ));/**   OWInUp  O+W+V+Off+E-bit in  **/
+        for (int i=0;i<  this->width;i++)
+            this->ports.push_back(Port( 1,PortDirection::IN ));/** OWPushUp            1-bit in  **/
+        for (int i=0;i<  this->width;i++)
+            this->ports.push_back(Port( 1,PortDirection::OUT));/** OWFullUp            1-bit out **/
+
+        /** -------- left -------- **/
+        for (int i=0;i< this->height;i++)
+            this->ports.push_back(Port(   ReformedPE::     X_BIT_WIDTH
+                                       +  ReformedPE:: VALID_BIT_WIDTH
+                                       +  ReformedPE::OFFSET_BIT_WIDTH
+                                       +  ReformedPE::    WE_BIT_WIDTH,
+                                          PortDirection::IN ));/**    XInLeft  X+V+Off+E-bit in  **/
+        for (int i=0;i< this->height;i++)
+            this->ports.push_back(Port( 1,PortDirection::IN ));/**  XPushLeft          1-bit in  **/
+        for (int i=0;i< this->height;i++)
+            this->ports.push_back(Port( 1,PortDirection::OUT));/**  XFullLeft          1-bit out **/
+
+        /** -------- ddown ------- **/
+        for (int i=0;i<2*this->width;i++)
+            this->ports.push_back(Port(   ReformedPE:: S_BIT_WIDTH
+                                       +  ReformedPE::SE_BIT_WIDTH,
+                                          PortDirection::OUT));/**  SOut S+E-bit out **/
+        for (int i=0;i<2*this->width;i++)
+            this->ports.push_back(Port( 1,PortDirection::OUT));/** SPush   1-bit out **/
+        for (int i=0;i<2*this->width;i++)
+            this->ports.push_back(Port( 1,PortDirection::IN ));/** SFull   1-bit in  **/
+        std::cout<<this->ports.size()<<std::endl;
+        std::cout<<PortName::Number()<<std::endl;
+        assert(this->ports.size()==PortName::Number());
+        assert(this->InputConnected());
+        return;
+    }
+
+    void OutputConnect() override{
+        assert(this->OutputConnected());
+        /** ---------- up -------- **/
+        for (int w=0;w<this->width;w++){
+            this->peArray[0][w].Clone(
+                this->ports[ReformedPEArray::OWFullUpList[w].ToIndex()],
+                ReformedPE::OWFullUp
+            ); /**            1-bit out **/
+        }
+        /** -------- left -------- **/
+        for (int h=0;h<this->height;h++){
+            this->peArray[0][h].Clone(
+                this->ports[ReformedPEArray::XFullLeftList[h].ToIndex()],
+                ReformedPE::XFullLeft
+            ); /**            1-bit out **/
+        }
+        /** -------- down-down ------- **/
+        for (int w=0;w<this->width;w++){
+            this->peArray[this->height-2][w].Clone(
+                this->ports[ReformedPEArray::SOutDDownList[ 2*w ].ToIndex()],
+                ReformedPE::SOutDDown
+            ); /**          S+E-bit out **/
+            this->peArray[this->height-1][w].Clone(
+                this->ports[ReformedPEArray::SOutDDownList[2*w+1].ToIndex()],
+                ReformedPE::SOutDDown
+            ); /**          S+E-bit out **/
+            this->peArray[this->height-2][w].Clone(
+                this->ports[ReformedPEArray::SPushDDownList[ 2*w ].ToIndex()],
+                ReformedPE::SPushDDown
+            ); /**            1-bit out **/
+            this->peArray[this->height-1][w].Clone(
+                this->ports[ReformedPEArray::SPushDDownList[2*w+1].ToIndex()],
+                ReformedPE::SPushDDown
+            ); /**            1-bit out **/
+        }
+        assert(this->OutputConnected());
+        return;
+    }
+
+public:
+    /** ---------- up -------- **/
+    const vector<ReformedPE::PortName>   OWInUpList; /**  O+W+V+Off+E-bit in  **/
+    const vector<ReformedPE::PortName> OWPushUpList; /**            1-bit in  **/
+    const vector<ReformedPE::PortName> OWFullUpList; /**            1-bit out **/
+    /** -------- eft -------- **/
+    const vector<ReformedPE::PortName>   XInLeftList; /**   X+V+Off+E-bit in  **/
+    const vector<ReformedPE::PortName> XPushLeftList; /**           1-bit in  **/
+    const vector<ReformedPE::PortName> XFullLeftList; /**           1-bit out **/
+    /** -------- down-down ------- **/
+    const vector<ReformedPE::PortName>  SOutDDownList; /**        S+E-bit out **/
+    const vector<ReformedPE::PortName> SPushDDownList; /**          1-bit out **/
+    const vector<ReformedPE::PortName> SFullDDownList; /**          1-bit in  **/
+
+    ReformedPEArray(
+            ArrayLenType height,
+            ArrayLenType width ,
+            ReformedPE::ClockFeqType  ruPer,
+            ReformedPE::ClockFeqType macPer):
+            height(height),
+             width( width),
+        /** ---------- up -------- **/
+          OWInUpList(  width,PortName(ReformedPE::    OWInUp)), /**  O+W+V+Off+E-bit in  **/
+        OWPushUpList(  width,PortName(ReformedPE::  OWPushUp)), /**            1-bit in  **/
+        OWFullUpList(  width,PortName(ReformedPE::  OWFullUp)), /**            1-bit out **/
+        /** -------- left -------- **/
+        XInLeftList(  height,PortName(ReformedPE::   XInLeft)), /**    X+V+Off+E-bit in  **/
+      XPushLeftList(  height,PortName(ReformedPE:: XPushLeft)), /**            1-bit in  **/
+      XFullLeftList(  height,PortName(ReformedPE:: XFullLeft)), /**            1-bit out **/
+        /** -------- down-down ------- **/
+       SOutDDownList(2*width,PortName(ReformedPE:: SOutDDown)), /**          S+E-bit out **/
+      SPushDDownList(2*width,PortName(ReformedPE::SPushDDown)), /**            1-bit out **/
+      SFullDDownList(2*width,PortName(ReformedPE::SFullDDown))  /**            1-bit in  **/
+    {
+        assert(height>=2 && width>=2);
+        this->peArray.push_back(vector<ReformedPE>(width,ReformedPE(ruPer,macPer,false)));
+        this->peArray.push_back(vector<ReformedPE>(width,ReformedPE(ruPer,macPer,false)));
+        for (int i=2;i<height;i++)
+            this->peArray.push_back(vector<ReformedPE>(width,ReformedPE(ruPer,macPer,true)));
+        this->InitializePorts();
+        this->OutputConnect();
+        return;
+    }
+
+private:
+    ReformedPEArray(const ReformedPEArray&);
+    ReformedPEArray &operator=(const ReformedPEArray&);
+public:
+    ~ReformedPEArray(){
+        PortName::ResetCount();
+        return;
+    }
+
+    inline void InnerConnect() override{
+        assert(this->OuterConnected());
+        /******************************************
+         ** connect input ports with inner logic **
+         ******************************************/
+        /** ---------- up -------- **/
+        for (int w=0;w<this->width;w++){
+            this->peArray[0][w].Clone(
+                ReformedPE::OWInUp,
+                this->ports[ReformedPEArray::OWInUpList[w].ToIndex()]
+            ); /**   OWInUp O+W+V+Off+E-bit in  **/
+            this->peArray[0][w].Clone(
+                ReformedPE::OWPushUp,
+                this->ports[ReformedPEArray::OWPushUpList[w].ToIndex()]
+            ); /** OWPushUp           1-bit in  **/
+        }
+        /** -------- left -------- **/
+        for (int h=0;h<this->height;h++){
+            this->peArray[0][h].Clone(
+                ReformedPE::XInLeft,
+                this->ports[ReformedPEArray::  XInLeftList[h].ToIndex()]
+            ); /**   XInLeft  X+V+Off+E-bit in  **/
+            this->peArray[0][h].Clone(
+                ReformedPE::XPushLeft,
+                this->ports[ReformedPEArray::XPushLeftList[h].ToIndex()]
+            ); /** XPushLeft          1-bit in  **/
+        }
+        /** ----- uup & ddown ---- **/
+        for (int w=0;w<this->width;w++){
+            this->peArray[0][w].Clone(
+                ReformedPE::SInUUp,
+                ReformedPEArray::_Low_S_E
+            ); /**  SInUUp S+E-bit in  **/
+            this->peArray[1][w].Clone(
+                ReformedPE::SInUUp,
+                ReformedPEArray::_Low_S_E
+            ); /**  SInUUp S+E-bit in  **/
+
+            this->peArray[0][w].Clone(
+                ReformedPE::SPushUUp,
+                ReformedPEArray::_Low_1
+            ); /**  SPushUUp  1-bit in  **/
+            this->peArray[1][w].Clone(
+                ReformedPE::SPushUUp,
+                ReformedPEArray::_Low_1
+            ); /**  SPushUUp  1-bit in  **/
+
+            this->peArray[this->height-1][w].Clone(
+                ReformedPE::SFullDDown,
+                this->ports[ReformedPEArray::SFullDDownList[ 2*w ].ToIndex()]
+            ); /**  SFullDDown  1-bit in  **/
+            this->peArray[this->height-2][w].Clone(
+                ReformedPE::SFullDDown,
+                this->ports[ReformedPEArray::SFullDDownList[2*w+1].ToIndex()]
+            ); /**  SFullDDown  1-bit in  **/
+        }
+
+        /*************************
+         ** internal connection **
+         *************************/
+        /** ---------- up -------- **/
+        for (int h=1;h<this->height;h++)
+            for (int w=0;w<this->width;w++){
+                this->peArray[ h ][w].ConnectTo(
+                    ReformedPE::OWInUp,
+                    this->peArray[h-1][w],
+                    ReformedPE::OWOutDown
+                ); /** OWIn O+W+V+Off+E-bit **/
+                this->peArray[ h ][w].ConnectTo(
+                    ReformedPE::OWPushUp,
+                    this->peArray[h-1][w],
+                    ReformedPE::OWPushDown
+                ); /** OWPush         1-bit **/
+                this->peArray[h-1][w].ConnectTo(
+                    ReformedPE::OWFullDown,
+                    this->peArray[ h ][w],
+                    ReformedPE::OWFullUp
+                ); /** OWFull         1-bit **/
+            }
+        /** -------- left -------- **/
+        for (int h=0;h<this->height;h++)
+            for (int w=1;w<this->width;w++){
+                this->peArray[h][ w ].ConnectTo(
+                    ReformedPE::XInLeft,
+                    this->peArray[h][w-1],
+                    ReformedPE::XOutRight
+                ); /**  XIn   X+V+Off+E-bit **/
+                this->peArray[h][ w ].ConnectTo(
+                    ReformedPE::XPushLeft,
+                    this->peArray[h][w-1],
+                    ReformedPE::XPushRight
+                ); /**  XPush         1-bit **/
+                this->peArray[h][w-1].ConnectTo(
+                    ReformedPE::XFullRight,
+                    this->peArray[h][ w ],
+                    ReformedPE::XFullLeft
+                ); /**  XFull         1-bit **/
+            }
+        /** -------- up-up ------- **/
+        for (int h=2;h<this->height;h++)
+            for (int w=0;w<this->width;w++){
+                this->peArray[h][w].ConnectTo(
+                    ReformedPE::SInUUp,
+                    this->peArray[h-2][w],
+                    ReformedPE::SOutDDown
+                ); /**  SIn   S+E-bit in  **/
+                this->peArray[h][w].ConnectTo(
+                    ReformedPE::SPushUUp,
+                    this->peArray[h-2][w],
+                    ReformedPE::SPushDDown
+                ); /**  SPush   1-bit in  **/
+                this->peArray[h-2][w].ConnectTo(
+                    ReformedPE::SFullDDown,
+                    this->peArray[ h ][w],
+                    ReformedPE::SFullUUp
+                ); /**  SFull   1-bit in  **/
+            }
+        for (int h=0;h<this->height;h++)
+            for (int w=0;w<this->width;w++)
+                this->peArray[h][w].InnerConnect();
+        assert(this->InnerConnectedCorrect());
+        return;
+    }
+    inline bool InnerConnectedCorrect() const override{
+        return true;
+    }
+    inline bool OutputConnectedCorrect() const override{
+        return true;
+    }
+    inline bool InnerConnected() const override{
+        for (int h=0;h<this->height;h++)
+            for (int w=0;w<this->width;w++)
+                if (!this->peArray[h][w].InnerConnected())
+                    return false;
+        return true;
+    }
+    inline bool atPosEdge() override{
+        for (int h=0;h<this->height;h++)
+            for (int w=0;w<this->width;w++){
+                this->peArray[h][w].atPosEdge();
+            }
+        return true;
+    }
+    inline bool atNegEdge() override{
+        return false;
+    }
+    inline bool Run() override{
+        for (int h=0;h<this->height;h++)
+            for (int w=0;w<this->width;w++)
+                this->peArray[h][w].Run();
+        return false;
+    }
+};
+
+#endif //__SYSTEM_PE_ARRAY_HPP

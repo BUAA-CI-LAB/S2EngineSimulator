@@ -1,0 +1,130 @@
+###########################
+    Performance analyze    
+###########################
+total clock used      :	20771
+equivalent speed(Tops):	0.341221
+###########################
+       Power analyze       
+###########################
+Global buffer activation statistics:
+	   total      global buffer read bits:	2405376
+	  weight   global buffer read bits:	1244160
+	activation global buffer read bits:	1161216
+Register activation statistics:
+	Register total zero write bits:	61727377-bit
+	Register total  one write bits:	48577359-bit
+	Register total    read    bits:	110288947-bit
+	9-bit register
+		total write  bits:	11953440
+		total read   bits:	15943168
+		write zero  times:	6631200
+		write  one  times:	5322240
+	8-bit register
+		total write  bits:	10625280
+		total read   bits:	10620584
+		write zero  times:	5967024
+		write  one  times:	4658256
+	31-bit register
+		total write  bits:	41172960
+		total read   bits:	41156065
+		write zero  times:	21386209
+		write  one  times:	19786751
+	16-bit register
+		total write  bits:	21285376
+		total read   bits:	19956950
+		write zero  times:	11883200
+		write  one  times:	9402176
+	15-bit register
+		total write  bits:	19955040
+		total read   bits:	19956950
+		write zero  times:	10547104
+		write  one  times:	9407936
+	2-bit register
+		total write  bits:	5312640
+		total read   bits:	2655230
+		write zero  times:	5312640
+		write  one  times:	0
+FIFO activation statistics:
+	FIFO total write bits:	67546023-bit
+	FIFO total zero write:	40239180-bit
+	FIFO total  one write:	27306843-bit
+	FIFO total read bits :	67503296-bit
+	FIFO parameters: width:21 depth:8
+		total push times:	1330080
+		total  pop times:	1328160
+		total write bits:	27931680
+		 zero write bits:	17263008
+		  one write bits:	10668672
+		total  read bits:	27891360
+	FIFO parameters: width:15 depth:3
+		total push times:	1330419
+		total  pop times:	1330336
+		total write bits:	19956285
+		 zero write bits:	11884362
+		  one write bits:	8071923
+		total  read bits:	19955040
+	FIFO parameters: width:14 depth:3
+		total push times:	1330419
+		total  pop times:	1330336
+		total write bits:	18625866
+		 zero write bits:	10548183
+		  one write bits:	8077683
+		total  read bits:	18624704
+	FIFO parameters: width:32 depth:2
+		total push times:	32256
+		total  pop times:	32256
+		total write bits:	1032192
+		 zero write bits:	543627
+		  one write bits:	488565
+		total  read bits:	1032192
+Shift Adder activation statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total run times:	1327615
+SignCtrlMulter activation statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total run times:	1327573
+Comparer activation statistics:
+	Comparer parameters: width:4 unsigned
+		total run times:	1327104
+###########################
+        Area analyze       
+###########################
+Register area statistics:
+	Register total capacity:	21248-bit
+	9-bit register
+		total numbers:	256
+		total  bits  :	2304
+	8-bit register
+		total numbers:	256
+		total  bits  :	2048
+	31-bit register
+		total numbers:	256
+		total  bits  :	7936
+	16-bit register
+		total numbers:	256
+		total  bits  :	4096
+	15-bit register
+		total numbers:	256
+		total  bits  :	3840
+	2-bit register
+		total numbers:	512
+		total  bits  :	1024
+FIFO area statistics:
+	FIFO total capacity:	81664-bit
+	FIFO parameters: width:21 depth:8
+		total number:	256
+	FIFO parameters: width:15 depth:3
+		total number:	256
+	FIFO parameters: width:14 depth:3
+		total number:	256
+	FIFO parameters: width:32 depth:2
+		total number:	256
+Shift Adder area statistics:
+	Shift Adder parameters: input0BW:16 input1BW:31 outputBW:31 shiftBW0:8 shiftBW1:8 signed
+		total numbers:	256
+SignCtrlMulter area statistics:
+	SignCtrlMulter parameters: input0BW:8 input1BW:8 outputBW:16
+		total numbers:	256
+Comparer area statistics:
+	Comparer parameters: width:4 unsigned
+		total numbers:	256
