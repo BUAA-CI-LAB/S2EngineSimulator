@@ -5,6 +5,10 @@ Simulator for S2Engine, a novel systolic architecture that can fully exploit the
 
 For more details, please see our full paper: https://ieeexplore.ieee.org/document/9450011
 
+
 ## Requirements
+gcc version: 4.8.1
+
+Windows / Linux
 
 
